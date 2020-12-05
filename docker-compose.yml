@@ -42,7 +42,7 @@ services:
       - WEATHER_LONGITUDE=${WEATHER_LONGITUDE}
       - WEATHER_RADIUSKM=${WEATHER_RADIUSKM}
       - INFLUXDB_URL=http://influxdb:8086
-      - INFLUXDB_DB="speedtest"
+      - INFLUXDB_DB=speedtest
     links:
       - influxdb
     depends_on:
