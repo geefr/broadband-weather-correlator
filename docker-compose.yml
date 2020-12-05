@@ -15,7 +15,7 @@ services:
 
   weatherfetcher:
     build:
-      context: ./weatherfetcher
+      context: ./Weatherfetcher
       dockerfile: Dockerfile
     container_name: weatherfetcher
     restart: unless-stopped
