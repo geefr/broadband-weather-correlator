@@ -21,7 +21,11 @@ services:
     restart: unless-stopped
     network_mode: 'bridge'
     environment:
-      - UPDATE_INTERVAL=300
+      - POLLING_INTERVAL=${POLLING_INTERVAL}
+      - LATITUDE=${LATITUDE}
+      - LONGITUDE=${LONGITUDE}
+      - DISTANCE=${DISTANCE}
+      - DB_CONNECTION=localhost:8086
     links:
       - influxdb
     depends_on:

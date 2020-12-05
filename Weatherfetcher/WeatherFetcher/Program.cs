@@ -11,14 +11,30 @@ namespace WeatherFetcher
       // TODO: Need to read parameters from environment vars, passed into container
 
       // Polling interval (seconds)
-      var pollingInterval = 10;
-      var api = new EnvAgencyRainfall();
-      var lat = 51.0899;
-      var lon = -0.4547;
-      //var lat=53.365387;
-      //var lon=-1.462722;
-      var dist = 30;
 
+      var pollingIntervalEnv = Environment.GetEnvironmentVariable("POLLING_INTERVAL");
+      var latEnv = Environment.GetEnvironmentVariable("LATITUDE");
+      var lonEnv = Environment.GetEnvironmentVariable("LONGITUDE");
+      var distEnv = Environment.GetEnvironmentVariable("DISTANCE");
+      if( string.IsNullOrEmpty(pollingIntervalEnv ) ||
+          string.IsNullOrEmpty(latEnv ) ||
+          string.IsNullOrEmpty(lonEnv ) ||
+          string.IsNullOrEmpty(distEnv ))
+      {
+        Console.WriteLine("Failed to read environment vars");
+        return 1;
+      }
+
+      var pollingInterval = 60;
+      int.TryParse(pollingIntervalEnv, out pollingInterval);
+      var lat = 0.0;
+      double.TryParse(latEnv, out lat);
+      var lon = 0.0;
+      double.TryParse(lonEnv, out lon);
+      var dist = 30;
+      int.TryParse(distEnv, out dist);
+
+      var api = new EnvAgencyRainfall();
       // Read list of stations once on startup, assume we'll be restarted whenever params change, or to pull in new stations
       var stations = api.GetStations(lat, lon, dist);
       if( stations == null )
