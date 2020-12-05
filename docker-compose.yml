@@ -2,17 +2,33 @@
 version: '3'
 services:
   influxdb:
-    image: influxdb
+    image: influxdb:latest
     container_name: influxdb
     restart: unless-stopped
     network_mode: 'bridge'
     ports:
       - '8086:8086'
     environment:
-      - INFLUXDB_DB=weather-data
+      - INFLUXDB_DB="speedtest"
     volumes:
       - './influxdb:/var/lib/influxdb'
-
+    
+  chronograf:
+    image: chronograf
+    container_name: chronograf
+    restart: unless-stopped
+    network_mode: 'bridge'
+    ports:
+      - '8888:8888'
+    environment:
+      - INFLUXDB_URL=http://influxdb:8086
+    volumes:
+      - './chronograf:/var/lib/chronograf'
+    links:
+      - influxdb
+    depends_on:
+      - influxdb
+    
   weatherfetcher:
     build:
       context: ./Weatherfetcher
@@ -25,7 +41,20 @@ services:
       - LATITUDE=${LATITUDE}
       - LONGITUDE=${LONGITUDE}
       - DISTANCE=${DISTANCE}
-      - DB_CONNECTION=localhost:8086
+      - INFLUXDB_URL=http://influxdb:8086
+      - INFLUXDB_DB="speedtest"
+    links:
+      - influxdb
+    depends_on:
+      - influxdb
+
+  speedtest:
+    image: phikai/speedtest
+    container_name: speedtest
+    restart: unless-stopped
+    network_mode: 'bridge'
+    environment:
+      - TEST_INTERVAL=180
     links:
       - influxdb
     depends_on:
