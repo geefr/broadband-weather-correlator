@@ -37,10 +37,10 @@ services:
     restart: unless-stopped
     network_mode: 'bridge'
     environment:
-      - POLLING_INTERVAL=${POLLING_INTERVAL}
-      - LATITUDE=${LATITUDE}
-      - LONGITUDE=${LONGITUDE}
-      - DISTANCE=${DISTANCE}
+      - WEATHER_POLLING_INTERVAL=${WEATHER_POLLING_INTERVAL}
+      - WEATHER_LATITUDE=${WEATHER_LATITUDE}
+      - WEATHER_LONGITUDE=${WEATHER_LONGITUDE}
+      - WEATHER_RADIUSKM=${WEATHER_RADIUSKM}
       - INFLUXDB_URL=http://influxdb:8086
       - INFLUXDB_DB="speedtest"
     links:
@@ -48,6 +48,9 @@ services:
     depends_on:
       - influxdb
 
+  # TODO: The speedtest container isn't especially configurable, so I've
+  # just co-opted the speedtest influx db for weather stuff as well
+  # Should have separate DBs really, so might need to fork this container
   speedtest:
     image: phikai/speedtest
     container_name: speedtest

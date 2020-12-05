@@ -17,7 +17,7 @@ namespace WeatherFetcher
     static async System.Threading.Tasks.Task<int> Main(string[] args)
     {
       // Polling interval (seconds)
-      var pollingIntervalEnv = Environment.GetEnvironmentVariable("POLLING_INTERVAL");
+      var pollingIntervalEnv = Environment.GetEnvironmentVariable("WEATHER_POLLING_INTERVAL");
       var latEnv = Environment.GetEnvironmentVariable("WEATHER_LATITUDE");
       var lonEnv = Environment.GetEnvironmentVariable("WEATHER_LONGITUDE");
       var distEnv = Environment.GetEnvironmentVariable("WEATHER_RADIUSKM");
